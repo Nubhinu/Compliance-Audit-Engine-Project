@@ -11,7 +11,7 @@ Compliance Audit & Intent Classification Engine candidate assessment
 brief (2-week sprint, UK Financial Services / Utilities / Telco /
 Healthcare scope, FCA Consumer Duty + UK GDPR).
 
-Why deterministic, not ML
+Why deterministic, not ML:
 Per the brief: regulated UK institutions need an auditable, explainable
 link between a flagged interaction and the exact rule/phrase that fired
 it, zero hallucination risk, and instant governance updates via config
@@ -19,7 +19,7 @@ changes rather than model retraining. Every score in this project
 traces back to a named `rule_id` in `rule_matches` - there is no
 statistical model anywhere in the pipeline.
 
-Pipeline (brief Section 2.1)
+Pipeline (brief Section 2.1):
 ```
 CSV (5,000 raw interactions)
         │
@@ -42,7 +42,7 @@ CSV (5,000 raw interactions)
         ▼
  6. BI Reporting          dashboard/app.py (Streamlit) + sql/01..12
 ```
-Repository layout
+Repository layout:
 ```
 config/
   pii_patterns.json        UK PII regex rules (editable, no code changes needed)
@@ -68,7 +68,7 @@ dashboard/
   app.py                   Streamlit Executive Summary + Auditor Work Queue
 .github/workflows/ci.yml   runs the pipeline + full test suite on every push
 ```
-Quickstart
+Quickstart:
 ```bash
 pip install -r requirements.txt
 
@@ -95,7 +95,8 @@ equivalent in that file's header comment) since the project is
 delivered and CI-tested against SQLite for a zero-setup reviewer
 experience.
 
-Design decisions
+Design decisions:
+
 Two real bugs found in the brief's own worked patterns, fixed and
 regression-tested. Building `sql/11_pii_assurance_check.sql` (the
 brief's own required "expect zero rows" check) against the loaded data
@@ -173,7 +174,8 @@ report. Duplicate `interaction_id`s (150 in the source) are resolved by
 preferring the row without the synthetic `[DUPLICATE SUBMISSION]`
 marker, then the earliest timestamp.
 
-Testing
+Testing:
+
 70 tests across 4 files, 95% coverage on the core pipeline modules
 (`src/run_sql.py`, a thin CLI convenience wrapper, and `if __name__ == "__main__"` demo blocks are excluded from the coverage target via
 `.coveragerc` - see that file for the exact scope):
@@ -191,7 +193,8 @@ ETL tests - timestamp parsing (both formats + garbage), channel
 canonicalisation (all 11 observed variants), dedup rule precedence,
 and a full idempotent-rerun proof against a temp SQLite database.
 
-Known limitations / what I'd do with more time
+Known limitations / what I'd do with more time:
+
 The agent-exposure and SLA reports would benefit from a real
 operational events table instead of the documented synthetic
 `flag_actions` timestamps.
